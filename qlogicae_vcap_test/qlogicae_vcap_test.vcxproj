@@ -58,22 +58,27 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>../../qlogicae_core/qlogicae_core;../qlogicae_tick_tack_toe</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../qlogicae_core/qlogicae_core;../qlogicae_vcap</AdditionalIncludeDirectories>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>..\..\qlogicae_core\$(IntDir)qlogicae_core;..\$(IntDir)qlogicae_tick_tack_toe;%(AdditionalDependencies)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>qlogicae_core.lib;qlogicae_tick_tack_toe.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\qlogicae_core\$(IntDir)qlogicae_core;..\$(IntDir)qlogicae_vcap;%(AdditionalDependencies)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>qlogicae_core.lib;qlogicae_vcap.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -103,15 +108,20 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>../../qlogicae_core/qlogicae_core;../qlogicae_tick_tack_toe</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../qlogicae_core/qlogicae_core;../qlogicae_vcap</AdditionalIncludeDirectories>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalLibraryDirectories>..\..\qlogicae_core\$(IntDir)qlogicae_core;..\$(IntDir)qlogicae_tick_tack_toe;%(AdditionalDependencies)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>qlogicae_core.lib;qlogicae_tick_tack_toe.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\qlogicae_core\$(IntDir)qlogicae_core;..\$(IntDir)qlogicae_vcap;%(AdditionalDependencies)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>qlogicae_core.lib;qlogicae_vcap.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

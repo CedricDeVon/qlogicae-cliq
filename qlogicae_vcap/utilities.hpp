@@ -4,7 +4,7 @@
 
 #include "qlogicae_core.hpp"
 
-namespace QLogicaeTickTackToe
+namespace QLogicaeVCAP
 {
 
 }
