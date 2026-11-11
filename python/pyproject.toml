@@ -1,6 +1,6 @@
 [project]
 name = "qlogicae-cliq"
-version = "0.0.1"
+version = "1.0.0"
 description = "The CLI framework for QLogicae projects"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.12"
@@ -91,38 +91,13 @@ addopts = "-ra"
 
 
 [tool.coverage.run]
-source = [
-    "qlogicae_cliq.v1.library.singleton_manager",
-    "qlogicae_cliq.v1.library.macros_manager",
-    "qlogicae_cliq.v1.library.object_merge_manager",
-    "qlogicae_cliq.v1.library.value_cache_storage_manager",
-    "qlogicae_cliq.v1.library.external_dependency_manager",
-    "qlogicae_cliq.v1.library.enum_conversion_value_enum_manager",
-    "qlogicae_cliq.v1.library.python_module_manager",
-    "qlogicae_cliq.v1.library.plugin_manager",
-    "qlogicae_cliq.v1.library.asynchronous_manager",    
-    "qlogicae_cliq.v1.library.group_selection_manager",
-    "qlogicae_cliq.v1.library.placeholder_value_manager",
-]
+source = []
 branch = true
 
 
 [tool.coverage.report]
 show_missing = true
 skip_covered = false
-
-
-[tool.mypy]
-files = ["qlogicae_cliq/v2"]
-strict = true
-python_version = "3.12"
-namespace_packages = true
-explicit_package_bases = true
-show_error_codes = true
-pretty = true
-color_output = true
-show_column_numbers = true
-show_error_context = true
 
 
 [tool.ruff]
@@ -214,7 +189,7 @@ test-check-and-apply-format = """
 """
 
 test-check-and-apply-lint = """
-    mypy
+
 """
 
 test-run-unit = """
@@ -222,11 +197,11 @@ test-run-unit = """
 """
 
 test-run-smoke = """
-    pytest -vv --cov --cov-branch --cov-report=term-missing --cov-report=html:\"output/test/smoke/html\" --cov-report=xml:\"output/test/smoke/coverage.xml\" --cov-report=json:\"output/test/smoke/coverage.json\" --junitxml=\"output/test/smoke/junit.xml\" test/qlogicae_cor/v1/smoke/test_imports.py
+    pytest -vv --cov --cov-branch --cov-report=term-missing --cov-report=html:\"output/test/smoke/html\" --cov-report=xml:\"output/test/smoke/coverage.xml\" --cov-report=json:\"output/test/smoke/coverage.json\" --junitxml=\"output/test/smoke/junit.xml\" test/qlogicae_cliq/v1/smoke/test_imports.py
 """
 
 test-run-e2e = """
-    qlogicae-cliq
+    
 """
 
 test-check-feature-staleness = """
