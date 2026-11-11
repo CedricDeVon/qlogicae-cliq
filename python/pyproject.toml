@@ -1,0 +1,290 @@
+[project]
+name = "qlogicae-cliq"
+version = "0.0.1"
+description = "The CLI framework for QLogicae projects"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.12"
+license = "MIT"
+license-files = [
+    "LICENSE"
+]
+authors = [
+    { name = "Vaughn Cedric L. Araneta", email = "vaughncedriclipardoaraneta@gmail.com" }
+]
+maintainers = [
+    { name = "Vaughn Cedric L. Araneta", email = "vaughncedriclipardoaraneta@gmail.com" }
+]
+keywords = [
+    "qlogicae",
+    "cliq"
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "pytest-timeout",
+    "pybenchmark",
+    "ruff",
+    "mypy",
+    "hatch",
+    "twine",
+    "memray",
+    "scalene",
+    "pympler",
+    "vulture",
+    "bandit",
+    "detect-secrets",
+    "pip-audit",   
+    "python-minifier"
+]
+
+[project.scripts]
+qlogicae-cor = "qlogicae_cliq.v1.app:main"
+
+[project.urls]
+Homepage = "https://github.com/CedricDeVon/qlogicae-cliq"
+Repository = "https://github.com/CedricDeVon/qlogicae-cliq"
+Documentation = "https://github.com/CedricDeVon/qlogicae-cliq"
+Issues = "https://github.com/CedricDeVon/qlogicae-cliq/issues"
+Changelog = "https://github.com/CedricDeVon/qlogicae-cliq/releases"
+
+
+[build-system]
+requires = [
+    "hatchling"
+]
+build-backend = "hatchling.build"
+
+
+[tool.setuptools]
+package-dir = {"" = "qlogicae_cliq"}
+
+
+[tool.setuptools.packages.find]
+where = ["qlogicae_cliq"]
+
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = [
+    "./test/qlogicae_cliq/v1/unit"
+]
+python_files = ["test_*.py"]
+addopts = "-ra"
+
+
+[tool.coverage.run]
+source = [
+    "qlogicae_cliq.v1.library.singleton_manager",
+    "qlogicae_cliq.v1.library.macros_manager",
+    "qlogicae_cliq.v1.library.object_merge_manager",
+    "qlogicae_cliq.v1.library.value_cache_storage_manager",
+    "qlogicae_cliq.v1.library.external_dependency_manager",
+    "qlogicae_cliq.v1.library.enum_conversion_value_enum_manager",
+    "qlogicae_cliq.v1.library.python_module_manager",
+    "qlogicae_cliq.v1.library.plugin_manager",
+    "qlogicae_cliq.v1.library.asynchronous_manager",    
+    "qlogicae_cliq.v1.library.group_selection_manager",
+    "qlogicae_cliq.v1.library.placeholder_value_manager",
+]
+branch = true
+
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+
+
+[tool.mypy]
+files = ["qlogicae_cliq/v2"]
+strict = true
+python_version = "3.12"
+namespace_packages = true
+explicit_package_bases = true
+show_error_codes = true
+pretty = true
+color_output = true
+show_column_numbers = true
+show_error_context = true
+
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    ".output",
+    "output",
+    ".outputs",
+    "outputs",
+    ".dist",
+    "dist",
+    ".build",
+    "build",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".mypy_cache",
+    ".tox",
+    ".nox",
+    ".idea",
+    ".vscode",
+]
+
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+skip-magic-trailing-comma = false
+
+
+[tool.ruff.lint]
+select = [    
+    "E",
+    "W", # pycodestyle    
+    "F", # Pyflakes    
+    "I", # isort    
+    "UP", # pyupgrade    
+    "B", # flake8-bugbear
+    "PTH", # pathlib
+]
+ignore = [    
+    "S607",    
+    "E731",
+    "S101", # allow assert statements    
+    "S603", # allow subprocess usage
+    "PLR2004", # allow magic values
+]
+fixable = [
+    "ALL"
+]
+unfixable = []
+
+
+[tool.hatch.build]
+include = [
+    "qlogicae_cliq/**/*.py",
+    "qlogicae_cliq/py.typed",
+]
+exclude = [
+    "**/__pycache__",
+    "**/*.pyc",
+    "test",
+    ".github",
+    ".gitignore",
+    ".vscode",
+    "requirements.txt",
+    "output",
+    "docs/**",
+    "project/**",
+]
+
+[tool.hatch.build.targets.wheel.force-include]
+"qlogicae_cliq/py.typed" = "qlogicae_cliq/py.typed"
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["qlogicae_cliq"]
+
+
+[tool.hatch.envs.default.scripts]
+test-check-and-apply-format = """
+    ruff check qlogicae_cliq/v1 --fix
+"""
+
+test-check-and-apply-lint = """
+    mypy
+"""
+
+test-run-unit = """
+    pytest -vv --cov --cov-branch --cov-report=term-missing --cov-report=html:\"output/test/unit/html\" --cov-report=xml:\"output/test/unit/coverage.xml\" --cov-report=json:\"output/test/unit/coverage.json\" --junitxml=\"output/test/unit/junit.xml\"
+"""
+
+test-run-smoke = """
+    pytest -vv --cov --cov-branch --cov-report=term-missing --cov-report=html:\"output/test/smoke/html\" --cov-report=xml:\"output/test/smoke/coverage.xml\" --cov-report=json:\"output/test/smoke/coverage.json\" --junitxml=\"output/test/smoke/junit.xml\" test/qlogicae_cor/v1/smoke/test_imports.py
+"""
+
+test-run-e2e = """
+    qlogicae-cliq
+"""
+
+test-check-feature-staleness = """
+    vulture qlogicae_cliq 
+"""
+
+test-check-dependencies = """
+    pip-audit -r requirements.txt
+"""
+
+test-check-hardcoded-secrets = """
+    detect-secrets scan 
+"""
+
+test-check-security = """
+    bandit -r qlogicae_cliq
+"""
+
+test-check-pip-deployment-build = """
+    twine check output/build/release/dist/*
+"""
+
+benchmark-create-memray-usage-import-only = """
+    memray run -o output/benchmark/usage.import_only.bin -m benchmark.qlogicae_cliq.v1.memory.import.usage.import_only --force
+"""
+
+benchmark-view-memray-usage-import-only = """
+    memray tree output/benchmark/usage.import_only.bin
+"""
+
+benchmark-create-memray-usage-import-and-allocate = """
+    memray run -o output/benchmark/usage.import_and_allocate.bin -m benchmark.qlogicae_cliq.v1.memory.import.usage.import_and_allocate --force
+"""
+
+benchmark-view-memray-usage-import-and-allocate = """
+    memray tree output/benchmark/usage.import_and_allocate.bin
+"""
+
+benchmark-short-library-import-memory-usage = """
+    ./.venv/bin/python -m benchmark.qlogicae_cliq.v1.tool qlogicae_cliq.v1 --json-output output/benchmark/import-library-memory-usage.json --repetitions 10
+"""
+
+benchmark-long-experiment-import-memory-usage = """
+    ./.venv/bin/python -m benchmark.qlogicae_cliq.v1.tool benchmark.qlogicae_cliq.v1.memory.import.experiment.static_import benchmark.qlogicae_cliq.v1.memory.import.experiment.old_dynamic_import benchmark.qlogicae_cliq.v1.memory.import.experiment.typeless_with_static_class_import benchmark.qlogicae_cliq.v1.memory.import.experiment.typeless_with_dynamic_class_import benchmark.qlogicae_cliq.v1.memory.import.experiment.empty_package --json-output output/benchmark/import-experiment-memory-usage.json/ --repetitions 20
+"""
+
+benchmark-long-library-import-memory-usage = """
+    ./.venv/bin/python -m benchmark.qlogicae_cliq.v1.tool qlogicae_cliq.v1 qlogicae_cliq.v2 qlogicae_cliq.v1 --json-output output/benchmark/import-library-memory-usage.json --repetitions 20
+"""
+
+deploy-build-release = """
+    twine upload output/build/release/dist/* --config-file .pypirc
+"""
+
+usage-install-release = """
+    ./.venv/bin/python -m pip install --force-reinstall output/build/release/dist/*.whl
+"""
+
+usage-uninstall-release = """
+    ./.venv/bin/python -m pip uninstall -y output/build/release/dist/*.whl
+"""
