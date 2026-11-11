@@ -71,9 +71,9 @@
     </thead>
     <tbody>
         <tr>
-            <td style="text-align: left">⌛ Developing</td>
+            <td style="text-align: left">🔥 Latest</td>
             <td style="text-align: left">python-1.0.0</td>
-            <td style="text-align: left">2026-11-XX</td>
+            <td style="text-align: left">2026-11-11</td>
             <td style="text-align: left">Initial public release</td>
             <td style="text-align: left"></td>
         </tr>
