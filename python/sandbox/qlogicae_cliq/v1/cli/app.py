@@ -29,4 +29,3 @@ CliCommandManager().get_singleton().command_collection["print-any-message"](
         "target": ["Hello"]
     }
 )
-
