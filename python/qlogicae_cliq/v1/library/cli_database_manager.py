@@ -2,7 +2,6 @@ __all__ = (
     "CliDatabaseManager",
 )
 
-_CliPluginManager = None
 _CliDatabaseManager = None
 _ExternalDependencyManager = None
 _ValueCacheStorageManager = None
@@ -48,7 +47,6 @@ def _allocate():
             return cls._singleton
 
         def construct(self):
-            global _CliPluginManager
             global _ExternalDependencyManager
             global _ValueCacheStorageManager
             global _PersistentCacheStorageManager
@@ -59,30 +57,6 @@ def _allocate():
 
             _ExternalDependencyManager = (
                 ExternalDependencyManager().get_singleton
-            )
-            _CliPluginManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".cli_plugin_manager",
-                    package="qlogicae_cliq.v1.library",
-                    member="CliPluginManager",
-                    is_member_callable=True,
-                )
-            )
-            _ValueCacheStorageManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".value_cache_storage_manager",
-                    package="qlogicae_cor.v3.library",
-                    member="ValueCacheStorageManager",
-                    is_member_callable=True,
-                )
-            )
-            _PersistentCacheStorageManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".persistent_cache_storage_manager",
-                    package="qlogicae_cor.v3.library",
-                    member="PersistentCacheStorageManager",
-                    is_member_callable=True,
-                )
             )
 
             return True
@@ -151,15 +125,11 @@ def _allocate():
             ):
                 database_callback_on_pre_setup()
 
-            self.setup_database(
-                kwargs,
-                "value_cache",
-                _ValueCacheStorageManager,
+            self.setup_optional_value_cache_database(
+                kwargs
             )
-            self.setup_database(
-                kwargs,
-                "persistent_cache",
-                _PersistentCacheStorageManager,
+            self.setup_optional_persistent_cache_database(
+                kwargs
             )
 
             if (
@@ -171,6 +141,108 @@ def _allocate():
             return True
 
         def shutdown(self):
+            return True
+
+        def setup_optional_value_cache_database(self, options):
+            if not isinstance(options, (dict)):
+                raise ValueError(
+                    "'options' must be a dictionary"
+                )
+
+            property_name = "value-cache"
+            database_data = (
+                options.get(
+                    property_name,
+                    {}
+                ) or {}
+            )
+            if not isinstance(database_data, (dict)):
+                raise ValueError(
+                    "plugin export property "
+                    "'database.{property_name}' "
+                    "must be a dictionary"
+                )
+
+            database_is_enabled = (
+                database_data.get(
+                    "is_enabled",
+                    False
+                )
+            )
+            if not isinstance(database_is_enabled, (bool)):
+                raise ValueError(
+                    "plugin export property "
+                    "'database.{property_name}.is_enabled' "
+                    "must be a boolean"
+                )
+
+            if database_is_enabled:
+                _ValueCacheStorageManager = (
+                    _ExternalDependencyManager().import_module(
+                        path=".value_cache_storage_manager",
+                        package="qlogicae_cor.v3.library",
+                        member="ValueCacheStorageManager",
+                        is_member_callable=True,
+                    )
+                )
+
+                self.setup_database(
+                    options,
+                    property_name,
+                    _ValueCacheStorageManager,
+                )
+
+            return True
+
+        def setup_optional_persistent_cache_database(self, options):
+            if not isinstance(options, (dict)):
+                raise ValueError(
+                    "'options' must be a dictionary"
+                )
+
+            property_name = "persistent-cache"
+            database_data = (
+                options.get(
+                    property_name,
+                    {}
+                ) or {}
+            )
+            if not isinstance(database_data, (dict)):
+                raise ValueError(
+                    "plugin export property "
+                    "'database.{property_name}' "
+                    "must be a dictionary"
+                )
+
+            database_is_enabled = (
+                database_data.get(
+                    "is_enabled",
+                    False
+                )
+            )
+            if not isinstance(database_is_enabled, (bool)):
+                raise ValueError(
+                    "plugin export property "
+                    "'database.{property_name}.is_enabled' "
+                    "must be a boolean"
+                )
+
+            if database_is_enabled:
+                _PersistentCacheStorageManager = (
+                    _ExternalDependencyManager().import_module(
+                        path=".persistent_cache_storage_manager",
+                        package="qlogicae_cor.v3.library",
+                        member="PersistentCacheStorageManager",
+                        is_member_callable=True,
+                    )
+                )
+
+                self.setup_database(
+                    options,
+                    "persistent_cache",
+                    _PersistentCacheStorageManager,
+                )
+
             return True
 
         def setup_database(self, options, property_name, class_name):

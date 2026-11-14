@@ -1,6 +1,6 @@
 [project]
 name = "qlogicae-cliq"
-version = "1.0.0"
+version = "1.0.1"
 description = "The CLI framework for QLogicae projects"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.12"
@@ -197,7 +197,7 @@ test-run-unit = """
 """
 
 test-run-smoke = """
-    pytest -vv --cov --cov-branch --cov-report=term-missing --cov-report=html:\"output/test/smoke/html\" --cov-report=xml:\"output/test/smoke/coverage.xml\" --cov-report=json:\"output/test/smoke/coverage.json\" --junitxml=\"output/test/smoke/junit.xml\" test/qlogicae_cliq/v1/smoke/test_imports.py
+    pytest -vv test/qlogicae_cliq/v1/smoke/test_imports.py
 """
 
 test-run-e2e = """

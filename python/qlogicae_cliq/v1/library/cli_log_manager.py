@@ -5,7 +5,6 @@ __all__ = (
 _LogOptions = None
 _CliLogManager = None
 _FileLogManager = None
-_CliPluginManager = None
 _ConsoleLogManager = None
 _ExternalDependencyManager = None
 
@@ -36,7 +35,6 @@ def _allocate():
             return cls._singleton
 
         def construct(self):
-            global _CliPluginManager
             global _LogOptions
             global _FileLogManager
             global _ConsoleLogManager
@@ -48,38 +46,6 @@ def _allocate():
 
             _ExternalDependencyManager = (
                 ExternalDependencyManager().get_singleton
-            )
-            _CliPluginManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".cli_plugin_manager",
-                    package="qlogicae_cliq.v1.library",
-                    member="CliPluginManager",
-                    is_member_callable=True,
-                )
-            )
-            _LogOptions = (
-                _ExternalDependencyManager().import_module(
-                    path=".log_options",
-                    package="qlogicae_cor.v3.library",
-                    member="LogOptions",
-                    is_member_callable=True,
-                )
-            )
-            _FileLogManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".file_log_manager",
-                    package="qlogicae_cor.v3.library",
-                    member="FileLogManager",
-                    is_member_callable=True,
-                )
-            )
-            _ConsoleLogManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".console_log_manager",
-                    package="qlogicae_cor.v3.library",
-                    member="ConsoleLogManager",
-                    is_member_callable=True,
-                )
             )
 
             return True
@@ -147,15 +113,11 @@ def _allocate():
             ):
                 log_callback_on_pre_setup()
 
-            self.setup_logger(
-                log_data,
-                "file",
-                _FileLogManager,
+            self.setup_optional_file_logger(
+                kwargs
             )
-            self.setup_logger(
-                log_data,
-                "console",
-                _ConsoleLogManager,
+            self.setup_optional_console_logger(
+                kwargs
             )
 
             if (
@@ -169,7 +131,109 @@ def _allocate():
         def shutdown(self):
             return True
 
-        def setup_logger(self, options, property_name, class_name):
+        def setup_optional_file_logger(self, options):
+            if not isinstance(options, (dict)):
+                raise ValueError(
+                    "'options' must be a dictionary"
+                )
+
+            property_name = "file"
+            log_data = (
+                options.get(
+                    property_name,
+                    {}
+                ) or {}
+            )
+            if not isinstance(log_data, (dict)):
+                raise ValueError(
+                    "plugin export property "
+                    "'log.{property_name}' "
+                    "must be a dictionary"
+                )
+
+            log_is_enabled = (
+                log_data.get(
+                    "is_enabled",
+                    False
+                )
+            )
+            if not isinstance(log_is_enabled, (bool)):
+                raise ValueError(
+                    "plugin export property "
+                    "'log.{property_name}.is_enabled' "
+                    "must be a boolean"
+                )
+
+            if log_is_enabled:
+                _FileLogManager = (
+                    _ExternalDependencyManager().import_module(
+                        path=".file_log_manager",
+                        package="qlogicae_cor.v3.library",
+                        member="FileLogManager",
+                        is_member_callable=True,
+                    )
+                )
+
+                self.setup_log(
+                    options,
+                    property_name,
+                    _FileLogManager,
+                )
+
+            return True
+
+        def setup_optional_console_logger(self, options):
+            if not isinstance(options, (dict)):
+                raise ValueError(
+                    "'options' must be a dictionary"
+                )
+
+            property_name = "console"
+            log_data = (
+                options.get(
+                    property_name,
+                    {}
+                ) or {}
+            )
+            if not isinstance(log_data, (dict)):
+                raise ValueError(
+                    "plugin export property "
+                    "'log.{property_name}' "
+                    "must be a dictionary"
+                )
+
+            log_is_enabled = (
+                log_data.get(
+                    "is_enabled",
+                    False
+                )
+            )
+            if not isinstance(log_is_enabled, (bool)):
+                raise ValueError(
+                    "plugin export property "
+                    "'log.{property_name}.is_enabled' "
+                    "must be a boolean"
+                )
+
+            if log_is_enabled:
+                _ConsoleLogManager = (
+                    _ExternalDependencyManager().import_module(
+                        path=".console_log_manager",
+                        package="qlogicae_cor.v3.library",
+                        member="ConsoleLogManager",
+                        is_member_callable=True,
+                    )
+                )
+
+                self.setup_log(
+                    options,
+                    property_name,
+                    _ConsoleLogManager,
+                )
+
+            return True
+
+        def setup_log(self, options, property_name, class_name):
             if not isinstance(options, (dict)):
                 raise ValueError(
                     "'options' must be a dictionary"
@@ -255,6 +319,15 @@ def _allocate():
                     callable(log_data_callback_on_pre_setup)
                 ):
                     log_data_callback_on_pre_setup()
+
+                _LogOptions = (
+                    _ExternalDependencyManager().import_module(
+                        path=".log_options",
+                        package="qlogicae_cor.v3.library",
+                        member="LogOptions",
+                        is_member_callable=True,
+                    )
+                )
 
                 result = class_name().get_singleton().setup(
                     options=_LogOptions()(

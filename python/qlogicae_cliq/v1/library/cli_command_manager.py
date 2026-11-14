@@ -12,12 +12,14 @@ def _allocate():
     global _allocate
     global _CliCommandManager
 
+
     class __CliCommandManager:
         __slots__ = (
             "_parser",
             "_commands",
             "_command_handler",
             "_parsed_arguments",
+            "_command_collection",
         )
 
         _singleton = None
@@ -50,23 +52,28 @@ def _allocate():
             _ExternalDependencyManager = (
                 ExternalDependencyManager().get_singleton
             )
-            _sys = (
-                _ExternalDependencyManager().import_module(
-                    path="sys",
-                )
-            )
-            _argparse = (
-                _ExternalDependencyManager().import_module(
-                    path="argparse",
-                )
-            )
 
             self._parser = None
             self._commands = None
             self._command_handler = None
             self._parsed_arguments = None
+            self._command_collection = {}
 
             return True
+
+        @property
+        def command_collection(self):
+            return self._command_collection
+
+
+        @command_collection.setter
+        def command_collection(self, value):
+            if not isinstance(value, dict):
+                raise ValueError(
+                    "'command_collection' must be a dictionary"
+                )
+
+            self._command_collection = value
 
         def setup(self, **kwargs):
             if not isinstance(kwargs, (dict)):
@@ -148,10 +155,14 @@ def _allocate():
             return True
 
         def setup_parser(self, options):
-            if not isinstance(options, (dict)):
-                raise ValueError(
-                    "'options' must be a dictionary"
+            if not isinstance(options, dict):
+                raise ValueError("'options' must be a dictionary")
+
+            _argparse = (
+                _ExternalDependencyManager().import_module(
+                    path="argparse",
                 )
+            )
 
             parser_args = options.get("args") or ()
             parser_kwargs = options.get("kwargs") or {}
@@ -166,45 +177,89 @@ def _allocate():
             if not commands:
                 return True
 
-            subparser_configuration = (
-                options.get("subparsers") or {}
-            )
-
-            subparser_args = subparser_configuration.get("args") or ()
-            subparser_kwargs = subparser_configuration.get("kwargs") or {}
+            subparser_configuration = options.get("subparsers") or {}
 
             subparsers = self._parser.add_subparsers(
-                *subparser_args,
-                **subparser_kwargs,
+                *(subparser_configuration.get("args") or ()),
+                **(subparser_configuration.get("kwargs") or {}),
             )
 
-            for command in commands:
+            self.setup_subcommands(
+                subparsers,
+                commands,
+            )
+
+            return True
+
+        def setup_subcommands(self, subparsers, commands):
+            if not subparsers:
+                raise ValueError("'subparsers' must be defined")
+
+            if not commands:
+                raise ValueError("'commands' must be defined")
+
+            result = {}
+            stack = [
+                (subparsers, command, "")
+                for command in reversed(commands)
+            ]
+
+            while stack:
+                parent_subparsers, command, prefix = stack.pop()
+
                 if not command:
                     continue
 
-                command_parser = subparsers.add_parser(
-                    command["name"],
+                name = command["name"]
+
+                combination = (
+                    f"{prefix}-{name}"
+                    if prefix
+                    else name
+                )
+
+                command_parser = parent_subparsers.add_parser(
+                    name,
                     *(command.get("args") or ()),
                     **(command.get("kwargs") or {}),
                 )
 
                 command_handler = command.get("command_handler")
 
-                if command_handler is not None:
+                if callable(command_handler):
                     command_parser.set_defaults(
                         command_handler=command_handler,
                     )
 
+                    result[combination] = command_handler
+
                 arguments = command.get("arguments") or ()
 
                 for argument in arguments:
-                    if not argument:
-                        continue
-
                     command_parser.add_argument(
                         *(argument.get("args") or ()),
                         **(argument.get("kwargs") or {}),
                     )
+
+                subcommands = command.get("subcommands") or ()
+
+                if subcommands:
+                    subparser_configuration = (
+                        command.get("subparsers") or {}
+                    )
+
+                    nested_subparsers = command_parser.add_subparsers(
+                        *(subparser_configuration.get("args") or ()),
+                        metavar=command.get("metavar") or "",
+                        **(subparser_configuration.get("kwargs") or {}),
+                    )
+
+                    stack.extend(
+                        (nested_subparsers, subcommand, combination)
+                        for subcommand in reversed(subcommands)
+                    )
+
+            self._command_collection = result
 
             return True
 
@@ -309,14 +364,28 @@ def _allocate():
 
             return result
 
+        def run_command(self, target, *args, **kwargs):
+            result = True
+
+            return result
+
         def read_cli_error_output(self):
+            _sys = (
+                _ExternalDependencyManager().import_module(
+                    path="sys",
+                )
+            )
+
             return _sys().stderr
 
         def read_cli_arguments(self):
+            _sys = (
+                _ExternalDependencyManager().import_module(
+                    path="sys",
+                )
+            )
+
             return tuple(_sys().argv[1:])
-
-
-
 
 
     _CliCommandManager = __CliCommandManager

@@ -49,38 +49,6 @@ def _allocate():
             _ExternalDependencyManager = (
                 ExternalDependencyManager().get_singleton
             )
-            _CliLogManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".cli_log_manager",
-                    package="qlogicae_cliq.v1.library",
-                    member="CliLogManager",
-                    is_member_callable=True,
-                )
-            )
-            _CliPluginManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".cli_plugin_manager",
-                    package="qlogicae_cliq.v1.library",
-                    member="CliPluginManager",
-                    is_member_callable=True,
-                )
-            )
-            _CliDatabaseManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".cli_database_manager",
-                    package="qlogicae_cliq.v1.library",
-                    member="CliDatabaseManager",
-                    is_member_callable=True,
-                )
-            )
-            _CliCommandManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".cli_command_manager",
-                    package="qlogicae_cliq.v1.library",
-                    member="CliCommandManager",
-                    is_member_callable=True,
-                )
-            )
 
             return True
 
@@ -202,6 +170,14 @@ def _allocate():
             if not isinstance(options, (dict)) or not options:
                 raise ValueError("'options' must be a non-empty dictionary")
 
+            _CliPluginManager = (
+                _ExternalDependencyManager().import_module(
+                    path=".cli_plugin_manager",
+                    package="qlogicae_cliq.v1.library",
+                    member="CliPluginManager",
+                    is_member_callable=True,
+                )
+            )
             cli_plugin_manager = (
                 _CliPluginManager()
                     .get_singleton()
@@ -236,6 +212,14 @@ def _allocate():
             if not isinstance(plugin_exports, (dict)) or not plugin_exports:
                 raise ValueError("'plugin_exports' must be a non-empty dictionary")
 
+            _CliPluginManager = (
+                _ExternalDependencyManager().import_module(
+                    path=".cli_plugin_manager",
+                    package="qlogicae_cliq.v1.library",
+                    member="CliPluginManager",
+                    is_member_callable=True,
+                )
+            )
             cli_plugin_manager = (
                 _CliPluginManager()
                     .get_singleton()
@@ -248,6 +232,15 @@ def _allocate():
                         plugin_exports
                     )
             ):
+                _CliLogManager = (
+                    _ExternalDependencyManager().import_module(
+                        path=".cli_log_manager",
+                        package="qlogicae_cliq.v1.library",
+                        member="CliLogManager",
+                        is_member_callable=True,
+                    )
+                )
+
                 result = (
                     _CliLogManager()
                         .get_singleton()
@@ -262,6 +255,14 @@ def _allocate():
             if not isinstance(plugin_exports, (dict)) or not plugin_exports:
                 raise ValueError("'plugin_exports' must be a non-empty dictionary")
 
+            _CliPluginManager = (
+                _ExternalDependencyManager().import_module(
+                    path=".cli_plugin_manager",
+                    package="qlogicae_cliq.v1.library",
+                    member="CliPluginManager",
+                    is_member_callable=True,
+                )
+            )
             cli_plugin_manager = (
                 _CliPluginManager()
                     .get_singleton()
@@ -274,6 +275,15 @@ def _allocate():
                         plugin_exports
                     )
             ):
+                _CliDatabaseManager = (
+                    _ExternalDependencyManager().import_module(
+                        path=".cli_database_manager",
+                        package="qlogicae_cliq.v1.library",
+                        member="CliDatabaseManager",
+                        is_member_callable=True,
+                    )
+                )
+
                 result = (
                     _CliDatabaseManager()
                         .get_singleton()
@@ -287,6 +297,15 @@ def _allocate():
         def setup_commands(self, plugin_exports):
             if not isinstance(plugin_exports, (dict)) or not plugin_exports:
                 raise ValueError("'plugin_exports' must be a non-empty dictionary")
+
+            _CliCommandManager = (
+                _ExternalDependencyManager().import_module(
+                    path=".cli_command_manager",
+                    package="qlogicae_cliq.v1.library",
+                    member="CliCommandManager",
+                    is_member_callable=True,
+                )
+            )
 
             cli_command_manager = (
                 _CliCommandManager()
@@ -306,6 +325,15 @@ def _allocate():
             if not isinstance(plugin_exports, (dict)) or not plugin_exports:
                 raise ValueError("'plugin_exports' must be a non-empty dictionary")
 
+            _CliCommandManager = (
+                _ExternalDependencyManager().import_module(
+                    path=".cli_command_manager",
+                    package="qlogicae_cliq.v1.library",
+                    member="CliCommandManager",
+                    is_member_callable=True,
+                )
+            )
+
             cli_command_manager = (
                 _CliCommandManager()
                     .get_singleton()
@@ -316,7 +344,6 @@ def _allocate():
                     .run_parser(
                         plugin_exports
                     )
-
             )
 
             return result

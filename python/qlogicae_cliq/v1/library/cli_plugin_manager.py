@@ -58,23 +58,16 @@ def _allocate():
             _ExternalDependencyManager = (
                 ExternalDependencyManager().get_singleton
             )
-            _PluginManager = (
-                _ExternalDependencyManager().import_module(
-                    path=".plugin_manager",
-                    package="qlogicae_cor.v3.library",
-                    member="PluginManager",
-                    is_member_callable=True,
-                )
-            )
+
             self._default_setup_options = {
                 "command": {
                     "options": {
                         "args": (),
                         "kwargs": {
-                            "prog": "name",
+                            "prog": "cli",
                             "description": "command description",
                             "add_help": True,
-                            "allow_abbrev": False,
+                            "allow_abbrev": True,
                         },
                         "commands": [],
                         "subparsers": {
@@ -260,6 +253,15 @@ def _allocate():
             if not isinstance(kwargs, (dict)):
                 raise ValueError("'kwargs' must be a dictionary")
 
+            _PluginManager = (
+                _ExternalDependencyManager().import_module(
+                    path=".plugin_manager",
+                    package="qlogicae_cor.v3.library",
+                    member="PluginManager",
+                    is_member_callable=True,
+                )
+            )
+
             plugin_manager = (
                 _PluginManager().get_singleton()
             )
@@ -291,6 +293,15 @@ def _allocate():
             return kwargs
 
         def read_module_exports(self):
+            _PluginManager = (
+                _ExternalDependencyManager().import_module(
+                    path=".plugin_manager",
+                    package="qlogicae_cor.v3.library",
+                    member="PluginManager",
+                    is_member_callable=True,
+                )
+            )
+
             plugin_manager = (
                 _PluginManager()
                     .get_singleton()
