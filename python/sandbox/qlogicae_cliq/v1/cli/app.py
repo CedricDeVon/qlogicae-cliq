@@ -5,12 +5,9 @@ from qlogicae_cor.v3.library.external_dependency_manager import (
 from qlogicae_cliq.v1.library.cli_app_manager import (
     CliAppManager    
 )
-
-# ExternalDependencyManager().get_singleton().setup(
-#     is_pre_allocated=True
-# )
-
-# ExternalDependencyManager().get_singleton().is_pre_allocated = True
+from qlogicae_cliq.v1.library.cli_command_manager import (
+    CliCommandManager    
+)
 
 CliAppManager().get_singleton().run(
     external_dependency={
@@ -26,3 +23,10 @@ CliAppManager().get_singleton().run(
         # "initial_export_data": {},
     },
 )
+
+CliCommandManager().get_singleton().command_collection["print-any-message"](
+    {
+        "target": ["Hello"]
+    }
+)
+

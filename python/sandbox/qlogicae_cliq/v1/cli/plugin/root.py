@@ -3,9 +3,14 @@ __all__ = (
 )
 
 def print_message(arguments):
-    for target in arguments.target:
-        for a in target:
-            print(a)
+    targets = (
+        arguments.get("target")
+        if isinstance(arguments, dict)
+        else getattr(arguments, "target", None)
+    )
+
+    for target in targets:
+        print(target)
 
 
 
@@ -27,6 +32,9 @@ def on_post_run():
 
 def export():
     data = {
+        "object_merge": {
+            "level": -1
+        },
         "command": {
             "options": {
                 "commands": [
@@ -34,26 +42,41 @@ def export():
                         "name": "print",
                         "args": (),
                         "kwargs": {
-                            "help": "print message",
-                            "aliases": (),
+                            "help": "print commands",
                         },
-                        "command_handler": print_message,
-                        "arguments": [
+                        "subcommands": [
                             {
-                                "args": (
-                                    "-t",
-                                    "--target",
-                                ),
+                                "name": "any",
+                                "args": (),
                                 "kwargs": {
-                                    "help": "argument description",
-                                    "dest": "target",
-                                    "action": "append",
-                                    "default": [],
-                                    "type": str,
-                                    "required": True,
-                                    "nargs": "+",
-                                    "metavar": "TARGET",
+                                    "help": "print any",                                    
                                 },
+                                "subcommands": [
+                                    {
+                                        "name": "message",
+                                        "kwargs": {
+                                            "help": "print message",
+                                        },
+                                        "command_handler": print_message,
+                                        "arguments": [
+                                            {
+                                                "args": (
+                                                    "-t",
+                                                    "--target",
+                                                ),
+                                                "kwargs": {
+                                                    "help": "message to print",
+                                                    "dest": "target",
+                                                    "action": "append",
+                                                    "type": str,
+                                                    "required": True,
+                                                    "nargs": "+",
+                                                    "metavar": "TARGET",
+                                                },
+                                            },
+                                        ],
+                                    },
+                                ],
                             },
                         ],
                     },
@@ -69,4 +92,3 @@ def export():
     }
 
     return data
-

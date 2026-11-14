@@ -139,7 +139,7 @@ qlogicae_cor/v3/library/macros_manager.py,sha256=ZN0liqCSF6POH_hMWdh8nOEnHkv93O3
 qlogicae_cor/v3/library/object_merge_manager.py,sha256=l5maITerfVE6qPVx6xSqqG0mQbz6GFSAzjD8dYSgZmQ,3391
 qlogicae_cor/v3/library/persistent_cache_storage_manager.py,sha256=Gr-9qJGZScee2Xm8rScEhQtvGYztB41Rv58ZdrLtoNQ,19812
 qlogicae_cor/v3/library/placeholder_value_manager.py,sha256=bSK31K0mGrHXKDxNb1YooE1sez1QJ-BA1GmexNPLJrE,2134
-qlogicae_cor/v3/library/plugin_manager.py,sha256=EfvcP4dy-McnFgDPic8WJsmuo9tTgtV9XDqxLwgqycg,6909
+qlogicae_cor/v3/library/plugin_manager.py,sha256=KaaVoJiBYeSzVYsuGUiMl8tevhAree5BCmg1qAyWd98,7087
 qlogicae_cor/v3/library/python_module_manager.py,sha256=pmyz_G1vUTRlQfp2DCWV9Ls_ZasmejZRi_x_pRYs6X8,4983
 qlogicae_cor/v3/library/script_process.py,sha256=ZhY3_K-SF1ABCvLy7zLaCVlm-7s_wmXaEep4kW_M5yc,431
 qlogicae_cor/v3/library/script_process_enum_manager.py,sha256=AUXYq0gIin12kCReRhZJHYjq1uAuCB_C_YNxW9yyJ0U,3433
@@ -162,8 +162,8 @@ qlogicae_cor/v3/library/timestamp_enum_manager.py,sha256=RoEHzujxpgpIm0Q8XvKFOH1
 qlogicae_cor/v3/library/timestamp_manager.py,sha256=4S90etLJFsO8KBNidKWjEN599CYnpmatpc6N_N22myc,5019
 qlogicae_cor/v3/library/value_cache_storage_manager.py,sha256=TYTVideYWFiSPW3ubDkH3WEU2uc14LuI2RqPpZrZNLg,10671
 qlogicae_cor/py.typed,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
-qlogicae_cor-3.3.0.dist-info/METADATA,sha256=MfxHMGrObcoMRDHFdvHFQRItiofBC6GwfH6RcNv1GI8,6741
-qlogicae_cor-3.3.0.dist-info/WHEEL,sha256=lCkmxWfQsSc9CfIClYeavTdQeEX2toPqufh9gI35EQA,87
-qlogicae_cor-3.3.0.dist-info/entry_points.txt,sha256=_sP86Id5yDjIYnYfuVBQgorJD4JplhrE7zwPqtJbk7s,58
-qlogicae_cor-3.3.0.dist-info/licenses/LICENSE,sha256=0nkMTqI13eB7BiRZX8di222r0RNYZMeuTCPwvhNEZKU,1082
-qlogicae_cor-3.3.0.dist-info/RECORD,,
+qlogicae_cor-3.3.1.dist-info/METADATA,sha256=KR-d1EXyZ_Rj83Q9gU3rlXUjhlzqGLZLqgVb1tqNrjw,6741
+qlogicae_cor-3.3.1.dist-info/WHEEL,sha256=lCkmxWfQsSc9CfIClYeavTdQeEX2toPqufh9gI35EQA,87
+qlogicae_cor-3.3.1.dist-info/entry_points.txt,sha256=_sP86Id5yDjIYnYfuVBQgorJD4JplhrE7zwPqtJbk7s,58
+qlogicae_cor-3.3.1.dist-info/licenses/LICENSE,sha256=0nkMTqI13eB7BiRZX8di222r0RNYZMeuTCPwvhNEZKU,1082
+qlogicae_cor-3.3.1.dist-info/RECORD,,
