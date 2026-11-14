@@ -73,6 +73,13 @@
         <tr>
             <td style="text-align: left">🔥 Latest</td>
             <td style="text-align: left">python-1.0.0</td>
+            <td style="text-align: left">2026-11-14</td>
+            <td style="text-align: left">Dynamic import bugfixes</td>
+            <td style="text-align: left"></td>
+        </tr>
+        <tr>
+            <td style="text-align: left">🚀 Initial Release</td>
+            <td style="text-align: left">python-1.0.0</td>
             <td style="text-align: left">2026-11-11</td>
             <td style="text-align: left">Initial public release</td>
             <td style="text-align: left"></td>
